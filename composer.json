@@ -1,0 +1,19 @@
+{
+    "name": "legnoh/yj-holiday",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryoma Kai",
+            "email": "legknmj@icloud.com"
+        }
+    ],
+    "require": {
+        "eluceo/ical": "^0.14.0"
+    },
+    "scripts": {
+      "post-install-cmd": [
+              "php main.php"
+          ]
+    }
+}
