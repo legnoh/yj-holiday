@@ -5,4 +5,4 @@ applications:
   instances: 1
   buildpack: staticfile_buildpack
   routes:
-  - route: holiday.tool.legnoh.lkj.io
+  - route: event.home.lkj.io

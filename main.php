@@ -30,8 +30,8 @@ foreach ($events as $event) {
     addEvent((new DateTime($event[0]))->add(new DateInterval('P364D')), '年末年始休暇(YJ)'); # 12/31
   }
 }
-file_put_contents('htdocs/yahoojapan.ics', $vCalendar->render());
-file_put_contents('htdocs/yahoojapan.json', json_encode($events_keymap));
+file_put_contents('htdocs/yahoojapan/holidays.ics', $vCalendar->render());
+file_put_contents('htdocs/yahoojapan/holidays.json', json_encode($events_keymap));
 
 
 function addEvent($datetime, $name){
