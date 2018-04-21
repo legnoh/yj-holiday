@@ -1,0 +1,8 @@
+---
+applications:
+- name: holidays
+  memory: 16M
+  instances: 1
+  buildpack: staticfile_buildpack
+  routes:
+  - route: holiday.tool.legnoh.lkj.io
