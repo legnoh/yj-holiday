@@ -6,13 +6,11 @@ date_default_timezone_set('Asia/Tokyo');
 $vCalendar = new \Eluceo\iCal\Component\Calendar('yahoojapan.holiday.tool.legnoh.lkj.io');
 $vCalendar->setCalendarColor('#FF2968');
 $vCalendar->setName("YJ holidays");
+$events_keymap = array();
 
 // CSVを入手して配列化(ヘッダ行は不要なので削除)
-$events        = array_map('str_getcsv', file('http://www8.cao.go.jp/chosei/shukujitsu/syukujitsu_kyujitsu.csv'));
+$events = array_map('str_getcsv', file('http://www8.cao.go.jp/chosei/shukujitsu/syukujitsu_kyujitsu.csv'));
 unset($events[0]);
-
-// JSON出力用の配列も用意
-$events_keymap = array();
 
 foreach ($events as $event) {
   addEvent(new DateTime($event[0]), mb_convert_encoding($event[1], 'utf-8', 'shift-jis'));
