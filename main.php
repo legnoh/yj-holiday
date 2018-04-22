@@ -17,17 +17,17 @@ foreach ($events as $event) {
 
   // 土曜日の場合は前営業日が休日となる
   if((new DateTime($event[0]))->format('w') == '6'){
-    addEvent(getBeforeWorkday(new DateTime($event[0])), '休日(YJ)');
+    addEvent(getBeforeWorkday(new DateTime($event[0])), '振替特別休日');
   }
 
   // 年末年始は12/29~1/4が休日となる
   if((new DateTime($event[0]))->format('m-d') == '01-01'){
-    addEvent((new DateTime($event[0]))->add(new DateInterval('P1D')), '年末年始休暇(YJ)'); # 01/02
-    addEvent((new DateTime($event[0]))->add(new DateInterval('P2D')), '年末年始休暇(YJ)'); # 01/03
-    addEvent((new DateTime($event[0]))->add(new DateInterval('P3D')), '年末年始休暇(YJ)'); # 01/04
-    addEvent((new DateTime($event[0]))->add(new DateInterval('P362D')), '年末年始休暇(YJ)'); # 12/29
-    addEvent((new DateTime($event[0]))->add(new DateInterval('P363D')), '年末年始休暇(YJ)'); # 12/30
-    addEvent((new DateTime($event[0]))->add(new DateInterval('P364D')), '年末年始休暇(YJ)'); # 12/31
+    addEvent((new DateTime($event[0]))->add(new DateInterval('P1D')), '年末年始休日'); # 01/02
+    addEvent((new DateTime($event[0]))->add(new DateInterval('P2D')), '年末年始休日'); # 01/03
+    addEvent((new DateTime($event[0]))->add(new DateInterval('P3D')), '年末年始休日'); # 01/04
+    addEvent((new DateTime($event[0]))->add(new DateInterval('P362D')), '年末年始休日'); # 12/29
+    addEvent((new DateTime($event[0]))->add(new DateInterval('P363D')), '年末年始休日'); # 12/30
+    addEvent((new DateTime($event[0]))->add(new DateInterval('P364D')), '年末年始休日'); # 12/31
   }
 }
 file_put_contents('htdocs/yahoojapan/holidays.ics', $vCalendar->render());
