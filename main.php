@@ -16,12 +16,12 @@ foreach ($events as $event) {
   addEvent(new DateTime($event[0]), mb_convert_encoding($event[1], 'utf-8', 'shift-jis'));
 
   // 土曜日の場合は前営業日が休日となる
-  if((new DateTime($event[0]))->format('w') == '6'){
+  if((new DateTime($event[0]))->format('w') === '6'){
     addEvent(getBeforeWorkday(new DateTime($event[0])), '振替特別休日');
   }
 
   // 年末年始は12/29~1/4が休日となる
-  if((new DateTime($event[0]))->format('m-d') == '01-01'){
+  if((new DateTime($event[0]))->format('m-d') === '01-01'){
     addEvent((new DateTime($event[0]))->add(new DateInterval('P1D')), '年末年始休日'); # 01/02
     addEvent((new DateTime($event[0]))->add(new DateInterval('P2D')), '年末年始休日'); # 01/03
     addEvent((new DateTime($event[0]))->add(new DateInterval('P3D')), '年末年始休日'); # 01/04
@@ -54,9 +54,9 @@ function getBeforeWorkday($datetime){
   global $events;
   while(true){
     $yesterday = $datetime->sub(new DateInterval('P1D'));
-    if( $yesterday->format('w') > '0'
-      && $yesterday->format('w') < '6'
-      && array_search($yesterday->format('Y-m-d'), array_column($events, 0)) == FALSE ){
+    if( (int)$yesterday->format('w') > 0
+      && (int)$yesterday->format('w') < 6
+      && array_search($yesterday->format('Y-m-d'), array_column($events, 0)) === FALSE ){
       return $yesterday;
     }
   }
