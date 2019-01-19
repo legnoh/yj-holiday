@@ -9,7 +9,7 @@ $vCalendar->setName("YJ holidays");
 $events_keymap = array();
 
 // CSVを入手して配列化(ヘッダ行は不要なので削除)
-$events = array_map('str_getcsv', file('http://www8.cao.go.jp/chosei/shukujitsu/syukujitsu_kyujitsu.csv'));
+$events = array_map('str_getcsv', file('https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv'));
 unset($events[0]);
 
 foreach ($events as $event) {
