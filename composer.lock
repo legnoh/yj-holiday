@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3d3354c3b5e7cd905272291c6511061",
+    "content-hash": "6c22f9ab450459688c83205d7885e128",
     "packages": [
         {
             "name": "eluceo/ical",
-            "version": "0.14.0",
+            "version": "0.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/markuspoerschke/iCal.git",
-                "reference": "5db245d5521a060129d0f14d154d65f32b804883"
+                "reference": "bdd24747587f6f9b10770a7b873a13e273f85f39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/markuspoerschke/iCal/zipball/5db245d5521a060129d0f14d154d65f32b804883",
-                "reference": "5db245d5521a060129d0f14d154d65f32b804883",
+                "url": "https://api.github.com/repos/markuspoerschke/iCal/zipball/bdd24747587f6f9b10770a7b873a13e273f85f39",
+                "reference": "bdd24747587f6f9b10770a7b873a13e273f85f39",
                 "shasum": ""
             },
             "require": {
@@ -55,7 +55,7 @@
                 "ics",
                 "php calendar"
             ],
-            "time": "2018-03-13T19:39:55+00:00"
+            "time": "2019-08-06T20:33:43+00:00"
         }
     ],
     "packages-dev": [],
