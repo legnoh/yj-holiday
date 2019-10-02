@@ -1,15 +1,17 @@
 # yj-holiday
 
-- http://event.home.lkj.io/yahoojapan/holidays.ics
-- http://event.home.lkj.io/yahoojapan/holidays.json
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9a81f2ea-9d0b-4bd4-a0d2-c182849a0936/deploy-status)](https://app.netlify.com/sites/yj-holidays/deploys)
+
+- https://event.home.lkj.io/yahoojapan/holidays.ics
+- https://event.home.lkj.io/yahoojapan/holidays.json
 
 ヤフー株式会社における土日以外の休日をまとめたiCal/JSONファイルを生成するスクリプトです。
 
 ## install
+
 ```sh
-$ git clone https://github.com/legnoh/yj-holiday.git
-$ composer install
-$ cf push
+git clone https://github.com/legnoh/yj-holiday.git
+composer install
 ```
 
 ## appendix

@@ -1,0 +1,6 @@
+[build]
+command = "composer install"
+publish = "htdocs"
+
+[build.environment]
+PHP_VERSION = "7.2"

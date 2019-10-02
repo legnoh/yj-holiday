@@ -25,9 +25,17 @@ foreach ($events as $event) {
     addEvent((new DateTime($event[0]))->add(new DateInterval('P1D')), '年末年始休日'); # 01/02
     addEvent((new DateTime($event[0]))->add(new DateInterval('P2D')), '年末年始休日'); # 01/03
     addEvent((new DateTime($event[0]))->add(new DateInterval('P3D')), '年末年始休日'); # 01/04
-    addEvent((new DateTime($event[0]))->add(new DateInterval('P362D')), '年末年始休日'); # 12/29
-    addEvent((new DateTime($event[0]))->add(new DateInterval('P363D')), '年末年始休日'); # 12/30
-    addEvent((new DateTime($event[0]))->add(new DateInterval('P364D')), '年末年始休日'); # 12/31
+
+    // 閏年判定
+    if((new DateTime($event[0]))->format('L')){
+      addEvent((new DateTime($event[0]))->add(new DateInterval('P363D')), '年末年始休日'); # 12/29
+      addEvent((new DateTime($event[0]))->add(new DateInterval('P364D')), '年末年始休日'); # 12/30
+      addEvent((new DateTime($event[0]))->add(new DateInterval('P365D')), '年末年始休日'); # 12/31
+    } else {
+      addEvent((new DateTime($event[0]))->add(new DateInterval('P362D')), '年末年始休日'); # 12/29
+      addEvent((new DateTime($event[0]))->add(new DateInterval('P363D')), '年末年始休日'); # 12/30
+      addEvent((new DateTime($event[0]))->add(new DateInterval('P364D')), '年末年始休日'); # 12/31
+    }
   }
 }
 file_put_contents('htdocs/yahoojapan/holidays.ics', $vCalendar->render());
