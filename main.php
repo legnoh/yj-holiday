@@ -59,12 +59,12 @@ function addEvent($datetime, $name){
 }
 
 function getBeforeWorkday($datetime){
-  global $events;
+  global $events_keymap;
   while(true){
     $yesterday = $datetime->sub(new DateInterval('P1D'));
     if( (int)$yesterday->format('w') > 0
       && (int)$yesterday->format('w') < 6
-      && array_search($yesterday->format('Y/n/j'), array_column($events, 0)) === FALSE ){
+      && array_search($yesterday->format('Y-m-d'), array_column($events_keymap, 'date')) === FALSE ){
       return $yesterday;
     }
   }
