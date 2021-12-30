@@ -80,7 +80,11 @@ func main() {
 
 	// go-ical経由で付与できないCOLOR要素を付与する
 	re := regexp.MustCompile(`COLOR:#FF2968`)
-	calendar_string = re.ReplaceAllString(calendar_string, "X-APPLE-CALENDAR-COLOR:#FF2968\nX-OUTLOOK-COLOR:#FF2968\nX-FUNAMBOL-COLOR:#FF2968")
+	calendar_string = re.ReplaceAllString(calendar_string, "X-APPLE-CALENDAR-COLOR:#FF2968\nX-OUTLOOK-COLOR:#FF2968")
+
+	// OutlookではOOFに見えるようにしておく
+	re = regexp.MustCompile(`TRANSP:OPAQUE`)
+	calendar_string = re.ReplaceAllString(calendar_string, "TRANSP:OPAQUE\nX-MICROSOFT-CDO-BUSYSTATUS: OOF")
 
 	calendar_bytes := []byte(calendar_string)
 	icsFile, err := os.Create(icsFilePath)
