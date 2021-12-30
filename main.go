@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -75,7 +76,17 @@ func main() {
 	}
 
 	// Create ICS
-	calendar_bytes := []byte(calendar.Serialize())
+	calendar_string := calendar.Serialize()
+
+	// go-ical経由で付与できないCOLOR要素を付与する
+	re := regexp.MustCompile(`COLOR:#FF2968`)
+	calendar_string = re.ReplaceAllString(calendar_string, "X-APPLE-CALENDAR-COLOR:#FF2968\nX-OUTLOOK-COLOR:#FF2968\nX-FUNAMBOL-COLOR:#FF2968")
+
+	// go-ical経由で付与できない X-Microsoft-CDO-ALLDAYEVENT: TRUE を全ての要素に付与する
+	re = regexp.MustCompile(`TRANSP:OPAQUE`)
+	calendar_string = re.ReplaceAllString(calendar_string, "TRANSP:OPAQUE\nX-Microsoft-CDO-ALLDAYEVENT: TRUE")
+
+	calendar_bytes := []byte(calendar_string)
 	icsFile, err := os.Create(icsFilePath)
 	if err != nil {
 		panic(err)
@@ -109,8 +120,6 @@ func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 
 	event.SetAllDayStartAt(v.Date.AddDate(0, 0, 1))
 	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 2))
-	// event.SetStartAt(v.Date)
-	// event.SetEndAt(v.Date.AddDate(0, 0, 1))
 	event.SetTimeTransparency(ics.TransparencyOpaque)
 	event.SetDtStampTime(time.Now())
 
