@@ -1,6 +1,6 @@
 version: 2
 updates:
-- package-ecosystem: composer
+- package-ecosystem: gomod
   directory: "/"
   schedule:
     interval: monthly
