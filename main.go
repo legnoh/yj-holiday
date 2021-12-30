@@ -107,8 +107,10 @@ func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 	event := calendar.AddEvent(uuidObj.String())
 	event.SetSummary(v.Name)
 
-	event.SetStartAt(v.Date)
-	event.SetEndAt(v.Date.AddDate(0, 0, 1))
+	event.SetAllDayStartAt(v.Date.AddDate(0, 0, 1))
+	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 1))
+	// event.SetStartAt(v.Date)
+	// event.SetEndAt(v.Date.AddDate(0, 0, 1))
 	event.SetTimeTransparency(ics.TransparencyTransparent)
 	event.SetDtStampTime(time.Now())
 
