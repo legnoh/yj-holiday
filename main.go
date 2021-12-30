@@ -111,7 +111,7 @@ func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 2))
 	// event.SetStartAt(v.Date)
 	// event.SetEndAt(v.Date.AddDate(0, 0, 1))
-	event.SetTimeTransparency(ics.TransparencyTransparent)
+	event.SetTimeTransparency(ics.TransparencyOpaque)
 	event.SetDtStampTime(time.Now())
 
 	return append(yjHolidays, v)
