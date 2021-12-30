@@ -55,6 +55,7 @@ func main() {
 	for _, v := range events {
 		yjHolidays = addEvent(v, yjHolidays)
 
+		// 年末年始休暇
 		if v.Date.Month() == time.January && v.Date.Day() == 1 {
 			newYearHolidays := []time.Time{
 				time.Date(v.Date.Year(), time.January, 2, 0, 0, 0, 0, v.Date.Location()),
@@ -70,6 +71,7 @@ func main() {
 			}
 		}
 
+		// 土曜日の場合は前の営業日を探してそれも休日にする
 		if v.Date.Weekday() == time.Saturday {
 			yjHolidays = addEvent(getSpecialHoliday(v.Date, yjHolidays), yjHolidays)
 		}
@@ -111,8 +113,8 @@ func main() {
 func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 
 	dtProperty := &ics.KeyValues{Key: "VALUE", Value: []string{"DATE"}}
-
 	uid := base64.StdEncoding.EncodeToString([]byte(v.Name + v.Date.Format("20060102")))
+
 	event := calendar.AddEvent(uid)
 	event.SetAllDayStartAt(v.Date.AddDate(0, 0, 1), dtProperty)
 	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 2), dtProperty)
@@ -124,7 +126,6 @@ func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 }
 
 func getSpecialHoliday(date time.Time, yjHolidays []Holiday) Holiday {
-
 	for {
 		date = date.AddDate(0, 0, -1)
 		if !isHoliday(date, yjHolidays) {
