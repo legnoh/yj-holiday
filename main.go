@@ -82,6 +82,10 @@ func main() {
 	re := regexp.MustCompile(`COLOR:#FF2968`)
 	calendar_string = re.ReplaceAllString(calendar_string, "X-APPLE-CALENDAR-COLOR:#FF2968\nX-OUTLOOK-COLOR:#FF2968\nX-FUNAMBOL-COLOR:#FF2968")
 
+	// DTSTART/DTEND 要素の書式を書き換える
+	re = regexp.MustCompile(`DT(START|END):`)
+	calendar_string = re.ReplaceAllString(calendar_string, "DT$1;VALUE=DATE:")
+
 	// go-ical経由で付与できない X-Microsoft-CDO-ALLDAYEVENT: TRUE を全ての要素に付与する
 	re = regexp.MustCompile(`TRANSP:OPAQUE`)
 	calendar_string = re.ReplaceAllString(calendar_string, "TRANSP:OPAQUE\nX-Microsoft-CDO-ALLDAYEVENT: TRUE")
@@ -116,10 +120,9 @@ func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 
 	uuidObj, _ := uuid.NewUUID()
 	event := calendar.AddEvent(uuidObj.String())
-	event.SetSummary(v.Name)
-
 	event.SetAllDayStartAt(v.Date.AddDate(0, 0, 1))
 	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 2))
+	event.SetSummary(v.Name)
 	event.SetTimeTransparency(ics.TransparencyOpaque)
 	event.SetDtStampTime(time.Now())
 
