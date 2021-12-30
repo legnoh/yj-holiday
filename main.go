@@ -64,7 +64,7 @@ func main() {
 				time.Date(v.Date.Year(), time.December, 31, 0, 0, 0, 0, v.Date.Location()),
 			}
 			for _, h := range newYearHolidays {
-				nyh := Holiday{Date: h, Name: "年末年始休暇"}
+				nyh := Holiday{Date: h, Name: "年末年始休日"}
 				yjHolidays = addEvent(nyh, yjHolidays)
 			}
 		}
