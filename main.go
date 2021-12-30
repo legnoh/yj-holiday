@@ -107,9 +107,8 @@ func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 	event := calendar.AddEvent(uuidObj.String())
 	event.SetSummary(v.Name)
 
-	// go-ical側で強制UTCになってしまうので、無理矢理1日加算してical側の日付を合わせる
-	event.SetStartAt(v.Date.AddDate(0, 0, 1))
-	event.SetEndAt(v.Date.AddDate(0, 0, 2))
+	event.SetStartAt(v.Date)
+	event.SetEndAt(v.Date.AddDate(0, 0, 1))
 	event.SetTimeTransparency(ics.TransparencyTransparent)
 	event.SetDtStampTime(time.Now())
 
