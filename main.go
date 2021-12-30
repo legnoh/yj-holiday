@@ -185,6 +185,7 @@ func getEvents() ([]Holiday, error) {
 		name := v[1]
 		date, err := time.Parse(csvDateFormat, v[0]+" +09:00")
 		if err != nil {
+			fmt.Println("info: " + v[0] + " is not parsable date. skipped..")
 			continue
 		}
 		holiday := Holiday{Name: name, Date: date}
