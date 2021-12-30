@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
@@ -14,7 +15,6 @@ import (
 	"time"
 
 	ics "github.com/arran4/golang-ical"
-	"github.com/google/uuid"
 	"golang.org/x/text/encoding/japanese"
 	"golang.org/x/text/transform"
 )
@@ -112,8 +112,8 @@ func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 
 	dtProperty := &ics.KeyValues{Key: "VALUE", Value: []string{"DATE"}}
 
-	uuidObj, _ := uuid.NewUUID()
-	event := calendar.AddEvent(uuidObj.String())
+	uid := base64.StdEncoding.EncodeToString([]byte(v.Name + v.Date.Format("20060102")))
+	event := calendar.AddEvent(uid)
 	event.SetAllDayStartAt(v.Date.AddDate(0, 0, 1), dtProperty)
 	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 2), dtProperty)
 	event.SetSummary(v.Name)
