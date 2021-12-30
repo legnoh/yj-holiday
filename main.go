@@ -82,14 +82,6 @@ func main() {
 	re := regexp.MustCompile(`COLOR:#FF2968`)
 	calendar_string = re.ReplaceAllString(calendar_string, "X-APPLE-CALENDAR-COLOR:#FF2968\nX-OUTLOOK-COLOR:#FF2968\nX-FUNAMBOL-COLOR:#FF2968")
 
-	// DTSTART/DTEND 要素の書式を書き換える
-	re = regexp.MustCompile(`DT(START|END):`)
-	calendar_string = re.ReplaceAllString(calendar_string, "DT$1;VALUE=DATE:")
-
-	// go-ical経由で付与できない X-Microsoft-CDO-ALLDAYEVENT: TRUE を全ての要素に付与する
-	re = regexp.MustCompile(`TRANSP:OPAQUE`)
-	calendar_string = re.ReplaceAllString(calendar_string, "TRANSP:OPAQUE\nX-Microsoft-CDO-ALLDAYEVENT: TRUE")
-
 	calendar_bytes := []byte(calendar_string)
 	icsFile, err := os.Create(icsFilePath)
 	if err != nil {
@@ -118,10 +110,12 @@ func main() {
 
 func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 
+	dtProperty := &ics.KeyValues{Key: "VALUE", Value: []string{"DATE"}}
+
 	uuidObj, _ := uuid.NewUUID()
 	event := calendar.AddEvent(uuidObj.String())
-	event.SetAllDayStartAt(v.Date.AddDate(0, 0, 1))
-	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 2))
+	event.SetAllDayStartAt(v.Date.AddDate(0, 0, 1), dtProperty)
+	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 2), dtProperty)
 	event.SetSummary(v.Name)
 	event.SetTimeTransparency(ics.TransparencyOpaque)
 	event.SetDtStampTime(time.Now())
