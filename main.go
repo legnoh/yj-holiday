@@ -48,7 +48,8 @@ func main() {
 
 	events, err := getEvents()
 	if err != nil {
-		panic(err)
+		fmt.Printf("error: %v", err)
+		os.Exit(1)
 	}
 
 	// Event processing...
@@ -87,25 +88,30 @@ func main() {
 	calendar_bytes := []byte(calendar_string)
 	icsFile, err := os.Create(icsFilePath)
 	if err != nil {
-		panic(err)
+		fmt.Printf("error: %v", err)
+		os.Exit(1)
 	}
 	defer icsFile.Close()
 	if err := ioutil.WriteFile(icsFilePath, calendar_bytes, 0666); err != nil {
-		panic(err)
+		fmt.Printf("error: %v", err)
+		os.Exit(1)
 	}
 
 	// Create JSON
 	json_bytes, err := json.Marshal(yjHolidays)
 	if err != nil {
-		panic(err)
+		fmt.Printf("error: %v", err)
+		os.Exit(1)
 	}
 	jsonFile, err := os.Create(jsonFilePath)
 	if err != nil {
-		panic(err)
+		fmt.Printf("error: %v", err)
+		os.Exit(1)
 	}
 	defer jsonFile.Close()
 	if err := ioutil.WriteFile(jsonFilePath, json_bytes, 0666); err != nil {
-		panic(err)
+		fmt.Printf("error: %v", err)
+		os.Exit(1)
 	}
 	fmt.Println("success to write json/ics file")
 }
