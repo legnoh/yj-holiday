@@ -4,5 +4,5 @@ go 1.17
 
 require (
 	github.com/arran4/golang-ical v0.0.0-20211212012649-32b67e209c4f
-	golang.org/x/text v0.8.0
+	golang.org/x/text v0.9.0
 )
