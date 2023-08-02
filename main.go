@@ -130,7 +130,7 @@ func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 	log.Infof("add: %s", v)
 	event := calendar.AddEvent(uid)
 	event.SetAllDayStartAt(v.Date, dtProperty)
-	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 1), dtProperty)
+	event.SetAllDayEndAt(v.Date, dtProperty)
 	event.SetSummary(v.Name)
 	event.SetTimeTransparency(ics.TransparencyOpaque)
 	event.SetDtStampTime(time.Now())
