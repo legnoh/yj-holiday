@@ -1,0 +1,33 @@
+name: Cron
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Out Repo 
+      uses: actions/checkout@v3
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: stable
+    - name: Install dependencies
+      run: go mod vendor
+    - name: Execute
+      run: go run main.go
+    - name: Deploy to Netlify
+      uses: nwtgck/actions-netlify@v1.2
+      with:
+        publish-dir: './htdocs'
+        production-deploy: true
+        enable-commit-comment: false
+        github-token: ${{ secrets.WRITABLE_TOKEN }}
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
