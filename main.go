@@ -5,8 +5,7 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
+	"io"
 	"net/http"
 	"os"
 	"regexp"
@@ -15,6 +14,7 @@ import (
 	"time"
 
 	ics "github.com/arran4/golang-ical"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/text/encoding/japanese"
 	"golang.org/x/text/transform"
 )
@@ -38,6 +38,9 @@ var (
 )
 
 func main() {
+
+	log := logrus.New()
+	log.SetFormatter(&logrus.TextFormatter{FullTimestamp: true})
 
 	yjHolidays := []Holiday{}
 
@@ -92,7 +95,7 @@ func main() {
 		os.Exit(1)
 	}
 	defer icsFile.Close()
-	if err := ioutil.WriteFile(icsFilePath, calendar_bytes, 0666); err != nil {
+	if err := os.WriteFile(icsFilePath, calendar_bytes, 0666); err != nil {
 		fmt.Printf("error: %v", err)
 		os.Exit(1)
 	}
@@ -109,7 +112,7 @@ func main() {
 		os.Exit(1)
 	}
 	defer jsonFile.Close()
-	if err := ioutil.WriteFile(jsonFilePath, json_bytes, 0666); err != nil {
+	if err := os.WriteFile(jsonFilePath, json_bytes, 0666); err != nil {
 		fmt.Printf("error: %v", err)
 		os.Exit(1)
 	}
@@ -118,12 +121,16 @@ func main() {
 
 func addEvent(v Holiday, yjHolidays []Holiday) []Holiday {
 
+	log := logrus.New()
+	log.SetFormatter(&logrus.TextFormatter{FullTimestamp: true})
+
 	dtProperty := &ics.KeyValues{Key: "VALUE", Value: []string{"DATE"}}
 	uid := base64.StdEncoding.EncodeToString([]byte(v.Name + v.Date.Format("20060102")))
 
+	log.Infof("add: %s", v)
 	event := calendar.AddEvent(uid)
-	event.SetAllDayStartAt(v.Date.AddDate(0, 0, 1), dtProperty)
-	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 2), dtProperty)
+	event.SetAllDayStartAt(v.Date, dtProperty)
+	event.SetAllDayEndAt(v.Date.AddDate(0, 0, 1), dtProperty)
 	event.SetSummary(v.Name)
 	event.SetTimeTransparency(ics.TransparencyOpaque)
 	event.SetDtStampTime(time.Now())
@@ -157,15 +164,18 @@ func getEvents() ([]Holiday, error) {
 	var (
 		csvUrl        = "https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv"
 		holidays      []Holiday
-		csvDateFormat = "2006/1/2 -07:00"
+		csvDateFormat = "2006/1/2-07:00"
 	)
+
+	log := logrus.New()
+	log.SetFormatter(&logrus.TextFormatter{FullTimestamp: true})
 
 	resp, err := http.Get(csvUrl)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -183,9 +193,9 @@ func getEvents() ([]Holiday, error) {
 
 	for _, v := range records {
 		name := v[1]
-		date, err := time.Parse(csvDateFormat, v[0]+" +09:00")
+		date, err := time.Parse(csvDateFormat, v[0]+"-00:00")
 		if err != nil {
-			fmt.Println("info: " + v[0] + " is not parsable date. skipped..")
+			log.Warnf("info: %s is not parsable date. skipped...", v[0])
 			continue
 		}
 		holiday := Holiday{Name: name, Date: date}
